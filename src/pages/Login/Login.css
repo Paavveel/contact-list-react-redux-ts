@@ -1,0 +1,11 @@
+.login-form {
+  max-width: 400px;
+  margin: 200px auto 0 auto;
+  text-align: center;
+  display: grid;
+  gap: 20px;
+}
+
+.login-form-button {
+  width: 100%;
+}
