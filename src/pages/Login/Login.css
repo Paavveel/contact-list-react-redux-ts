@@ -6,6 +6,11 @@
   gap: 20px;
 }
 
+.login-error {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .login-form-button {
   width: 100%;
 }
