@@ -1,33 +1,22 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Typography } from 'antd';
 import { useState } from 'react';
+import { UserItem } from '../../features/user/userSlice';
 import { API } from '../../helpers/api';
 import styles from './Login.module.css';
 const { Title } = Typography;
-
-type LoginValues = {
-  userName: string;
-};
-
-type UserItem = {
-  name: string;
-  avatar: string;
-  email: string;
-  username: string;
-  id: string;
-};
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const onFinish = async ({ userName }: LoginValues) => {
+  const onFinish = async ({ username }: { username: UserItem['username'] }) => {
     setLoading(true);
     setError('');
     const response = await fetch(API.USERS_URL);
     const usersList: UserItem[] = await response.json();
 
-    const foundUser = usersList.find(user => user.username === userName);
+    const foundUser = usersList.find(user => user.username === username);
 
     if (!foundUser) {
       setError('Такого пользователя не существует');
@@ -41,12 +30,12 @@ export const Login = () => {
         <Form
           name='normal_login'
           className={styles.loginForm}
-          initialValues={{ userName: '', password: '' }}
+          initialValues={{ username: '', password: '' }}
           onFinish={onFinish}
         >
           <Title className={styles.loginFormTitle}>Авторизация</Title>
           <Form.Item
-            name='userName'
+            name='username'
             rules={[
               { required: true, message: 'Пожалуйста введите ваш логин' },
             ]}
