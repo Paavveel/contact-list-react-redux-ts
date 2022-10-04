@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Button, Divider, List } from 'antd';
 import { useEffect, useState } from 'react';
 import { API } from '../../helpers/api';
-import './Contacts.css';
+import styles from './Contacts.module.css';
 
 type ContactItem = {
   name: string;
@@ -21,7 +21,7 @@ export const Contacts = () => {
   }, []);
 
   return (
-    <div className='contacts'>
+    <div className={styles.contactsContainer}>
       <Button type='primary'>Добавить контакт</Button>
       <Divider orientation='center'>Список контактов</Divider>
       <List
