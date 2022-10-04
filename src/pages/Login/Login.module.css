@@ -1,0 +1,24 @@
+.loginFormContainer {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 200px 10px 0 10px;
+  display: grid;
+  gap: 20px;
+}
+
+.loginForm {
+  display: grid;
+  gap: 20px;
+}
+
+.loginFormTitle {
+  text-align: center;
+}
+
+.loginError {
+  width: 100%;
+}
+
+.loginFormButton {
+  width: 100%;
+}

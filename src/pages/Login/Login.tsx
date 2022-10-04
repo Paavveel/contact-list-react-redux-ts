@@ -2,7 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Typography } from 'antd';
 import { useState } from 'react';
 import { API } from '../../helpers/api';
-import './Login.css';
+import styles from './Login.module.css';
 const { Title } = Typography;
 
 type LoginValues = {
@@ -36,15 +36,15 @@ export const Login = () => {
   };
 
   return (
-    <>
+    <div className={styles.loginFormContainer}>
       <Spin spinning={loading}>
         <Form
           name='normal_login'
-          className='login-form'
+          className={styles.loginForm}
           initialValues={{ userName: '', password: '' }}
           onFinish={onFinish}
         >
-          <Title>Авторизация</Title>
+          <Title className={styles.loginFormTitle}>Авторизация</Title>
           <Form.Item
             name='userName'
             rules={[
@@ -72,7 +72,7 @@ export const Login = () => {
             <Button
               type='primary'
               htmlType='submit'
-              className='login-form-button'
+              className={styles.loginFormButton}
             >
               Вход
             </Button>
@@ -80,8 +80,13 @@ export const Login = () => {
         </Form>
       </Spin>
       {error && (
-        <Alert className='login-error' message={error} type='error' showIcon />
+        <Alert
+          className={styles.loginError}
+          message={error}
+          type='error'
+          showIcon
+        />
       )}
-    </>
+    </div>
   );
 };
