@@ -1,4 +1,9 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  LockOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logIn } from '../../features/auth/authSlice';
@@ -51,8 +56,11 @@ export const Login = () => {
               { required: true, message: 'Пожалуйста введите ваш пароль' },
             ]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className='site-form-item-icon' />}
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
               type='password'
               placeholder='Пароль'
             />
