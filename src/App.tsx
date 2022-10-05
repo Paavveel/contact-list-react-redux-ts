@@ -5,12 +5,14 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { AppRoutes } from './helpers/routes';
-import { Contacts, Login } from './pages';
+import { Contacts, HomeLayout, Login } from './pages';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path={AppRoutes.HOME} element={<Login />} />
+      <Route element={<HomeLayout />}>
+        <Route path={AppRoutes.HOME} element={<Login />} />
+      </Route>
       <Route path={AppRoutes.CONTACTS} element={<Contacts />} />
     </Route>
   )
