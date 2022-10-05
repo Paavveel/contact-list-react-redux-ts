@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { AppRoutes } from './helpers/routes';
 import { Contacts, HomeLayout, Login } from './pages';
+import { ProtectedRoute } from './pages/ProtectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -13,7 +14,9 @@ const router = createBrowserRouter(
       <Route element={<HomeLayout />}>
         <Route path={AppRoutes.HOME} element={<Login />} />
       </Route>
-      <Route path={AppRoutes.CONTACTS} element={<Contacts />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path={AppRoutes.CONTACTS} element={<Contacts />} />
+      </Route>
     </Route>
   )
 );
