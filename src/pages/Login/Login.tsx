@@ -1,6 +1,8 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Typography } from 'antd';
 import { useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { logIn } from '../../features/auth/authSlice';
 import { UserItem } from '../../features/user/userSlice';
 import { API } from '../../helpers/api';
 import styles from './Login.module.css';
@@ -9,6 +11,8 @@ const { Title } = Typography;
 export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const dispatch = useAppDispatch();
 
   const onFinish = async ({ username }: { username: UserItem['username'] }) => {
     setLoading(true);
@@ -20,6 +24,8 @@ export const Login = () => {
 
     if (!foundUser) {
       setError('Такого пользователя не существует');
+    } else {
+      dispatch(logIn());
     }
     setLoading(false);
   };
