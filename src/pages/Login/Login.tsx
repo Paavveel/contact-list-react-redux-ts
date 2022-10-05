@@ -1,38 +1,32 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Typography } from 'antd';
-import { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logIn } from '../../features/auth/authSlice';
-import { UserItem } from '../../features/user/userSlice';
-import { API } from '../../helpers/api';
+import { fetchUsers, UserItem } from '../../features/user/userApi';
+import {
+  selectUserError,
+  selectUserStatus,
+} from '../../features/user/userSlice';
 import styles from './Login.module.css';
 const { Title } = Typography;
 
 export const Login = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const status = useAppSelector(selectUserStatus);
+  const error = useAppSelector(selectUserError);
 
   const dispatch = useAppDispatch();
 
   const onFinish = async ({ username }: { username: UserItem['username'] }) => {
-    setLoading(true);
-    setError('');
-    const response = await fetch(API.USERS_URL);
-    const usersList: UserItem[] = await response.json();
+    const isUserFound = await dispatch(fetchUsers(username)).unwrap();
 
-    const foundUser = usersList.find(user => user.username === username);
-
-    if (!foundUser) {
-      setError('Такого пользователя не существует');
-    } else {
+    if (isUserFound) {
       dispatch(logIn());
     }
-    setLoading(false);
   };
 
   return (
     <div className={styles.loginFormContainer}>
-      <Spin spinning={loading}>
+      <Spin spinning={status === 'loading'}>
         <Form
           name='normal_login'
           className={styles.loginForm}
