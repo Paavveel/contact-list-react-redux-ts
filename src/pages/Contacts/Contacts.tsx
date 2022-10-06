@@ -1,13 +1,15 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Button, Divider, List } from 'antd';
 import Search from 'antd/lib/input/Search';
-import { ChangeEvent } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { ChangeEvent, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { fetchContacts } from '../../features/contacts/contactsApi';
 import { selectContacts } from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
 
 export const Contacts = () => {
   const contacts = useAppSelector(selectContacts);
+  const dispatch = useAppDispatch();
 
   const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(
@@ -21,6 +23,10 @@ export const Contacts = () => {
       value
     );
   };
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div className={styles.contactsContainer}>

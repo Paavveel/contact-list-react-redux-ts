@@ -10,7 +10,7 @@ export interface ContactItem {
 
 export const fetchContacts = createAsyncThunk<
   ContactItem[],
-  string,
+  void,
   { rejectValue: string }
 >('contacts/fetchContacts', async (_, { rejectWithValue }) => {
   const response = await fetch(API.CONTACTS_URL);

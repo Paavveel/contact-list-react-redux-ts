@@ -21,9 +21,19 @@ export const contactsSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.pending, state => {})
-      .addCase(fetchContacts.fulfilled, (state, action) => {})
-      .addCase(fetchContacts.rejected, (state, action) => {});
+      .addCase(fetchContacts.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.list = action.payload;
+        state.status = 'success';
+      })
+      .addCase(fetchContacts.rejected, (state, action) => {
+        state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        }
+      });
   },
 });
 
