@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { ContactItem, fetchContacts } from './contactsApi';
+import { ContactItem, deleteContact, fetchContacts } from './contactsApi';
 
 export interface ContactsState {
   list: ContactItem[];
@@ -23,12 +23,30 @@ export const contactsSlice = createSlice({
     builder
       .addCase(fetchContacts.pending, state => {
         state.status = 'loading';
+        state.error = '';
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.list = action.payload;
         state.status = 'success';
       })
       .addCase(fetchContacts.rejected, (state, action) => {
+        state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        }
+      })
+
+      .addCase(deleteContact.pending, state => {
+        state.status = 'loading';
+        state.error = '';
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          contact => contact.id !== action.payload
+        );
+        state.status = 'success';
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
         state.status = 'failed';
         if (action.payload) {
           state.error = action.payload;

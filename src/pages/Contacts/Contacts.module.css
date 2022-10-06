@@ -3,3 +3,17 @@
   max-width: 500px;
   margin: 0 auto;
 }
+
+.loginError {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+}
+
+@media (max-width: 450px) {
+  .loginError {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+  }
+}

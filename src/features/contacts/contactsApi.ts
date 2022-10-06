@@ -22,3 +22,20 @@ export const fetchContacts = createAsyncThunk<
   }
   return await response.json();
 });
+
+export const deleteContact = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>('contacts/deleteContact', async (id, { rejectWithValue }) => {
+  const response = await fetch(`${API.CONTACTS_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при удалении: ${response.status} (${response.statusText})`
+    );
+  }
+  return id;
+});

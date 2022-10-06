@@ -3,16 +3,22 @@ import { Alert, Avatar, Button, Divider, List } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { ChangeEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchContacts } from '../../features/contacts/contactsApi';
+import {
+  ContactItem,
+  deleteContact,
+  fetchContacts,
+} from '../../features/contacts/contactsApi';
 import {
   selectContacts,
   selectContactsError,
+  selectContactsStatus,
 } from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
 
 export const Contacts = () => {
   const contacts = useAppSelector(selectContacts);
   const error = useAppSelector(selectContactsError);
+  const status = useAppSelector(selectContactsStatus);
   const dispatch = useAppDispatch();
 
   const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +32,10 @@ export const Contacts = () => {
       '🚀 ~ file: Contacts.tsx ~ line 22 ~ handleSearchByButton ~ value',
       value
     );
+  };
+
+  const handleDelete = (id: ContactItem['id']) => {
+    dispatch(deleteContact(id));
   };
 
   useEffect(() => {
@@ -46,9 +56,10 @@ export const Contacts = () => {
       <Button type='primary'>Добавить контакт</Button>
       <Divider orientation='center' />
       <List
+        loading={status === 'loading'}
         itemLayout='horizontal'
         dataSource={contacts}
-        renderItem={({ avatar, name, phone }) => (
+        renderItem={({ avatar, name, phone, id }) => (
           <List.Item
             actions={[
               <Button key='list-loadmore-edit' icon={<EditOutlined />} />,
@@ -56,6 +67,7 @@ export const Contacts = () => {
                 key='list-loadmore-more'
                 danger
                 icon={<DeleteOutlined />}
+                onClick={() => handleDelete(id)}
               />,
             ]}
           >
@@ -73,6 +85,7 @@ export const Contacts = () => {
           message={error}
           type='error'
           showIcon
+          closable
         />
       )}
     </div>

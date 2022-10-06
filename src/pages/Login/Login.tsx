@@ -82,6 +82,7 @@ export const Login = () => {
           message={error}
           type='error'
           showIcon
+          closable
         />
       )}
     </div>
