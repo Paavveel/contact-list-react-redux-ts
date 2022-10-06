@@ -8,8 +8,16 @@ export interface UserState {
   error: string;
 }
 
+const getInitialUserFromLocalStorage = (): UserState['data'] => {
+  const user = localStorage.getItem('user');
+  if (typeof user === 'string') {
+    return JSON.parse(user);
+  }
+  return null;
+};
+
 const initialState: UserState = {
-  data: null,
+  data: getInitialUserFromLocalStorage(),
   status: 'idle',
   error: '',
 };
@@ -29,6 +37,7 @@ export const userSlice = createSlice({
         if (action.payload) {
           state.status = 'success';
           state.data = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
         }
       })
       .addCase(fetchUsers.rejected, (state, action) => {

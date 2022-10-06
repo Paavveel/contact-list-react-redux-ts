@@ -1,18 +1,21 @@
 import { LogoutOutlined } from '@ant-design/icons';
 import { Button, PageHeader } from 'antd';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logOut } from '../../features/auth/authSlice';
+import { selectUser } from '../../features/user/userSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
-  const handleLogOut = () => dispatch(logOut());
+  const handleLogOut = () => {
+    dispatch(logOut());
+  };
 
   return (
     <PageHeader
-      title='Имя'
+      title={user && user.username}
       className='site-page-header'
-      subTitle='subtitle'
       extra={[
         <Button
           key='1'
@@ -24,8 +27,8 @@ export const Header = () => {
         </Button>,
       ]}
       avatar={{
-        src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4',
+        src: user && user.avatar,
       }}
-    ></PageHeader>
+    />
   );
 };
