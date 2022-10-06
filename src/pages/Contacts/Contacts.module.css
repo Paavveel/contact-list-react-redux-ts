@@ -4,14 +4,14 @@
   margin: 0 auto;
 }
 
-.loginError {
+.contactsError {
   position: fixed;
   right: 10px;
   bottom: 10px;
 }
 
 @media (max-width: 450px) {
-  .loginError {
+  .contactsError {
     right: 10px;
     bottom: 10px;
     left: 10px;
