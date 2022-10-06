@@ -1,19 +1,13 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Avatar, Button, Divider, List } from 'antd';
 import Search from 'antd/lib/input/Search';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { API } from '../../helpers/api';
+import { ChangeEvent } from 'react';
+import { useAppSelector } from '../../app/hooks';
+import { selectContacts } from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
 
-type ContactItem = {
-  name: string;
-  avatar: string;
-  phone: string;
-  id: string;
-};
-
 export const Contacts = () => {
-  const [contactList, setContactList] = useState<ContactItem[]>([]);
+  const contacts = useAppSelector(selectContacts);
 
   const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(
@@ -27,12 +21,6 @@ export const Contacts = () => {
       value
     );
   };
-
-  useEffect(() => {
-    fetch(API.CONTACTS_URL)
-      .then(res => res.json())
-      .then(data => setContactList(data));
-  }, []);
 
   return (
     <div className={styles.contactsContainer}>
@@ -49,7 +37,7 @@ export const Contacts = () => {
       <Divider orientation='center' />
       <List
         itemLayout='horizontal'
-        dataSource={contactList}
+        dataSource={contacts}
         renderItem={item => (
           <List.Item
             actions={[
