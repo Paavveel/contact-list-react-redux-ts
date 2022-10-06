@@ -52,7 +52,11 @@ export const Contacts = () => {
           <List.Item
             actions={[
               <Button key='list-loadmore-edit' icon={<EditOutlined />} />,
-              <Button key='list-loadmore-more' icon={<DeleteOutlined />} />,
+              <Button
+                key='list-loadmore-more'
+                danger
+                icon={<DeleteOutlined />}
+              />,
             ]}
           >
             <List.Item.Meta
