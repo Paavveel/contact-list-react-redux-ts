@@ -8,6 +8,11 @@ export interface ContactItem {
   id: string;
 }
 
+export interface NewContactItem {
+  name: ContactItem['name'];
+  phone: ContactItem['phone'];
+}
+
 export const fetchContacts = createAsyncThunk<
   ContactItem[],
   void,
@@ -38,4 +43,25 @@ export const deleteContact = createAsyncThunk<
     );
   }
   return id;
+});
+
+export const addContact = createAsyncThunk<
+  ContactItem,
+  NewContactItem,
+  { rejectValue: string }
+>('contacts/addContact', async (newContact, { rejectWithValue }) => {
+  const response = await fetch(API.CONTACTS_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newContact),
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при добавлении: ${response.status} (${response.statusText})`
+    );
+  }
+  return await response.json();
 });

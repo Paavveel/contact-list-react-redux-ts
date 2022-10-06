@@ -1,37 +1,33 @@
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Form, Input, Modal } from 'antd';
+import { Button, Form, Input, Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-  selectContactsError,
-  selectContactsStatus,
-} from '../../features/contacts/contactsSlice';
+  addContact,
+  NewContactItem,
+} from '../../features/contacts/contactsApi';
+import { selectContactsStatus } from '../../features/contacts/contactsSlice';
 import styles from './AddForm.module.css';
-import { AddFormProps, AddFormValues } from './AddForm.props';
+import { AddFormProps } from './AddForm.props';
 
 export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
-  const error = useAppSelector(selectContactsError);
 
-  const onFinish = ({ name, phone }: AddFormValues) => {};
+  const onFinish = async (newContact: NewContactItem) => {
+    await dispatch(addContact(newContact));
+    closeAddForm();
+  };
 
   return (
     <Modal
       title='Редактирование контакта'
-      confirmLoading={status === 'success'}
       open={isAddFormOpen}
       onCancel={closeAddForm}
       width={400}
       centered
       footer={null}
     >
-      <Form
-        initialValues={{
-          name: '',
-          phone: '',
-        }}
-        onFinish={onFinish}
-      >
+      <Form onFinish={onFinish} disabled={status === 'loading'}>
         <Form.Item
           name='name'
           rules={[
@@ -67,9 +63,6 @@ export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
           </Button>
         </Form.Item>
       </Form>
-      {error && (
-        <Alert className={styles.addError} message={error} type='error' />
-      )}
     </Modal>
   );
 };
