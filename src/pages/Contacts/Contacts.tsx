@@ -1,14 +1,18 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Avatar, Button, Divider, List } from 'antd';
+import { Alert, Avatar, Button, Divider, List } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { ChangeEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchContacts } from '../../features/contacts/contactsApi';
-import { selectContacts } from '../../features/contacts/contactsSlice';
+import {
+  selectContacts,
+  selectContactsError,
+} from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
 
 export const Contacts = () => {
   const contacts = useAppSelector(selectContacts);
+  const error = useAppSelector(selectContactsError);
   const dispatch = useAppDispatch();
 
   const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,25 +48,29 @@ export const Contacts = () => {
       <List
         itemLayout='horizontal'
         dataSource={contacts}
-        renderItem={item => (
+        renderItem={({ avatar, name, phone }) => (
           <List.Item
             actions={[
-              <Button key='list-loadmore-edit' icon={<EditOutlined />}>
-                edit
-              </Button>,
-              <Button key='list-loadmore-more' icon={<DeleteOutlined />}>
-                delete
-              </Button>,
+              <Button key='list-loadmore-edit' icon={<EditOutlined />} />,
+              <Button key='list-loadmore-more' icon={<DeleteOutlined />} />,
             ]}
           >
             <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={item.name}
-              description={item.phone}
+              avatar={<Avatar src={avatar} />}
+              title={name}
+              description={phone}
             />
           </List.Item>
         )}
       />
+      {error && (
+        <Alert
+          className={styles.loginError}
+          message={error}
+          type='error'
+          showIcon
+        />
+      )}
     </div>
   );
 };
