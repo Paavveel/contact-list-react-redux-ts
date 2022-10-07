@@ -12,7 +12,7 @@ export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
 
-  const onFinish = async (newContact: NewContactItem) => {
+  const addNewContact = async (newContact: NewContactItem) => {
     await dispatch(addContact(newContact));
     closeAddForm();
   };
@@ -26,7 +26,7 @@ export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
       centered
       footer={null}
     >
-      <ContactForm onFinish={onFinish} status={status} />
+      <ContactForm onFinish={addNewContact} status={status} />
     </Modal>
   );
 };

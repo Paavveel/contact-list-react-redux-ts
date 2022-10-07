@@ -13,7 +13,7 @@ export const EditForm = ({
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
 
-  const onFinish = async (newContact: NewContactItem) => {};
+  const editContact = async (contact: NewContactItem) => {};
 
   return (
     <Modal
@@ -29,7 +29,7 @@ export const EditForm = ({
           name: selectedContact?.name,
           phone: selectedContact?.phone,
         }}
-        onFinish={onFinish}
+        onFinish={editContact}
         status={status}
       />
     </Modal>
