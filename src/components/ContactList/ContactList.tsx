@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Avatar, Button, List } from 'antd';
+import { Avatar, Button, List, Modal } from 'antd';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -26,7 +26,20 @@ export const ContactList = ({ filteredContacts }: ContactListProps) => {
   const closeEditForm = () => setIsEditFormOpen(false);
 
   const handleDelete = (id: ContactItem['id']) => {
-    dispatch(deleteContact(id));
+    Modal.info({
+      title: 'Вы уверены?',
+      content: (
+        <div>
+          <p>Контакт будет удален</p>
+        </div>
+      ),
+      onOk() {
+        dispatch(deleteContact(id));
+      },
+      onCancel() {
+        closeEditForm();
+      },
+    });
   };
   const handleEdit = (contact: ContactItem) => {
     setSelectedContact(contact);
