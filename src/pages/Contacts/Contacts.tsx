@@ -2,11 +2,15 @@ import { Alert, Button, Divider } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AddForm, ContactList, SearchForm } from '../../components';
-import { fetchContacts } from '../../features/contacts/contactsApi';
+import {
+  ContactItem,
+  fetchContacts,
+} from '../../features/contacts/contactsApi';
 import { selectContactsError } from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
 
 export const Contacts = () => {
+  const [filteredContacts, setFilteredContacts] = useState<ContactItem[]>([]);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const error = useAppSelector(selectContactsError);
@@ -22,13 +26,13 @@ export const Contacts = () => {
   return (
     <>
       <div className={styles.contactsContainer}>
-        <SearchForm />
+        <SearchForm setFilteredContacts={setFilteredContacts} />
         <Divider orientation='center'>Список контактов</Divider>
         <Button type='primary' onClick={openAddForm}>
           Добавить контакт
         </Button>
         <Divider orientation='center' />
-        <ContactList />
+        <ContactList filteredContacts={filteredContacts} />
         {error && (
           <Alert
             className={styles.contactsError}

@@ -11,8 +11,9 @@ import {
   selectContactsStatus,
 } from '../../features/contacts/contactsSlice';
 import { EditForm } from '../EditForm/EditForm';
+import { ContactListProps } from './ContactList.props';
 
-export const ContactList = () => {
+export const ContactList = ({ filteredContacts }: ContactListProps) => {
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<ContactItem | null>(
     null
@@ -37,7 +38,7 @@ export const ContactList = () => {
       <List
         loading={status === 'loading'}
         itemLayout='horizontal'
-        dataSource={contacts}
+        dataSource={filteredContacts.length ? filteredContacts : contacts}
         renderItem={contact => (
           <List.Item
             actions={[
