@@ -8,7 +8,7 @@ export interface ContactItem {
   id: string;
 }
 
-export interface NewContactItem {
+export interface ContactFormValues {
   name: ContactItem['name'];
   phone: ContactItem['phone'];
 }
@@ -47,7 +47,7 @@ export const deleteContact = createAsyncThunk<
 
 export const addContact = createAsyncThunk<
   ContactItem,
-  NewContactItem,
+  ContactFormValues,
   { rejectValue: string }
 >('contacts/addContact', async (newContact, { rejectWithValue }) => {
   const response = await fetch(API.CONTACTS_URL, {
@@ -61,6 +61,27 @@ export const addContact = createAsyncThunk<
   if (!response.ok) {
     return rejectWithValue(
       `Ошибка при добавлении: ${response.status} (${response.statusText})`
+    );
+  }
+  return await response.json();
+});
+
+export const editContact = createAsyncThunk<
+  ContactItem,
+  ContactItem,
+  { rejectValue: string }
+>('contacts/editContact', async (editedContact, { rejectWithValue }) => {
+  const response = await fetch(`${API.CONTACTS_URL}/${editedContact.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(editedContact),
+  });
+
+  if (!response.ok) {
+    return rejectWithValue(
+      `Ошибка при редактировании: ${response.status} (${response.statusText})`
     );
   }
   return await response.json();

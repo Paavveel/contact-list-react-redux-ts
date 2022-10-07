@@ -16,7 +16,13 @@ export const ContactForm = ({
     >
       <Form.Item
         name='name'
-        rules={[{ required: true, message: 'Пожалуйста введите имя контакта' }]}
+        rules={[
+          {
+            required: true,
+            message: 'Пожалуйста введите имя контакта',
+            whitespace: true,
+          },
+        ]}
       >
         <Input
           prefix={<UserOutlined className='site-form-item-icon' />}
@@ -27,7 +33,11 @@ export const ContactForm = ({
       <Form.Item
         name='phone'
         rules={[
-          { required: true, message: 'Пожалуйста введите номер телефона' },
+          {
+            required: true,
+            message: 'Пожалуйста введите номер телефона',
+            whitespace: true,
+          },
         ]}
       >
         <Input

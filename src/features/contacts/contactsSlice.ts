@@ -4,6 +4,7 @@ import {
   addContact,
   ContactItem,
   deleteContact,
+  editContact,
   fetchContacts,
 } from './contactsApi';
 
@@ -22,7 +23,11 @@ const initialState: ContactsState = {
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {},
+  reducers: {
+    setNoChanges: state => {
+      state.error = 'В контакте нет изменений!';
+    },
+  },
 
   extraReducers: builder => {
     builder
@@ -71,6 +76,26 @@ export const contactsSlice = createSlice({
         if (action.payload) {
           state.error = action.payload;
         }
+      })
+
+      .addCase(editContact.pending, state => {
+        state.status = 'loading';
+        state.error = '';
+      })
+      .addCase(editContact.fulfilled, (state, action) => {
+        state.list = state.list.map(contact => {
+          if (contact.id === action.payload.id) {
+            return action.payload;
+          }
+          return contact;
+        });
+        state.status = 'success';
+      })
+      .addCase(editContact.rejected, (state, action) => {
+        state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        }
       });
   },
 });
@@ -78,5 +103,7 @@ export const contactsSlice = createSlice({
 export const selectContacts = (state: RootState) => state.contacts.list;
 export const selectContactsStatus = (state: RootState) => state.contacts.status;
 export const selectContactsError = (state: RootState) => state.contacts.error;
+
+export const { setNoChanges } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

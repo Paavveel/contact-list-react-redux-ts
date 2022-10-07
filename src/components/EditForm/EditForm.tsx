@@ -1,7 +1,13 @@
 import { Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { NewContactItem } from '../../features/contacts/contactsApi';
-import { selectContactsStatus } from '../../features/contacts/contactsSlice';
+import {
+  ContactFormValues,
+  editContact,
+} from '../../features/contacts/contactsApi';
+import {
+  selectContactsStatus,
+  setNoChanges,
+} from '../../features/contacts/contactsSlice';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { EditFormProps } from './EditForm.props';
 
@@ -13,7 +19,26 @@ export const EditForm = ({
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
 
-  const editContact = async (contact: NewContactItem) => {};
+  const editSelectedContact = async ({ name, phone }: ContactFormValues) => {
+    if (!selectedContact) return;
+
+    if (
+      selectedContact.name === name.trim() &&
+      selectedContact.phone === phone.trim()
+    ) {
+      dispatch(setNoChanges());
+      closeEditForm();
+      return;
+    }
+
+    await dispatch(
+      editContact({
+        ...selectedContact,
+        ...{ name: name.trim(), phone: phone.trim() },
+      })
+    );
+    closeEditForm();
+  };
 
   return (
     <Modal
@@ -29,7 +54,7 @@ export const EditForm = ({
           name: selectedContact?.name,
           phone: selectedContact?.phone,
         }}
-        onFinish={editContact}
+        onFinish={editSelectedContact}
         status={status}
       />
     </Modal>

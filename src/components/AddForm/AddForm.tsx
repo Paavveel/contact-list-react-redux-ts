@@ -2,7 +2,7 @@ import { Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   addContact,
-  NewContactItem,
+  ContactFormValues,
 } from '../../features/contacts/contactsApi';
 import { selectContactsStatus } from '../../features/contacts/contactsSlice';
 import { ContactForm } from '../ContactForm/ContactForm';
@@ -12,8 +12,8 @@ export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
 
-  const addNewContact = async (newContact: NewContactItem) => {
-    await dispatch(addContact(newContact));
+  const addNewContact = async ({ name, phone }: ContactFormValues) => {
+    await dispatch(addContact({ name: name.trim(), phone: phone.trim() }));
     closeAddForm();
   };
 

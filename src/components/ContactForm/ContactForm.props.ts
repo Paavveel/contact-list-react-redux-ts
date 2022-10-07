@@ -1,6 +1,6 @@
 import {
+  ContactFormValues,
   ContactItem,
-  NewContactItem,
 } from '../../features/contacts/contactsApi';
 import { ContactsState } from '../../features/contacts/contactsSlice';
 
@@ -11,6 +11,6 @@ type ContactInitialValues = {
 
 export interface ContactFormProps {
   initialValues?: ContactInitialValues;
-  onFinish: (newContact: NewContactItem) => void;
+  onFinish: (newContact: ContactFormValues) => void;
   status: ContactsState['status'];
 }
