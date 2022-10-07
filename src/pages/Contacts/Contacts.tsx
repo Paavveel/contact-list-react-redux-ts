@@ -1,8 +1,7 @@
 import { Alert, Button, Divider } from 'antd';
-import Search from 'antd/lib/input/Search';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { AddForm, ContactList } from '../../components';
+import { AddForm, ContactList, SearchForm } from '../../components';
 import { fetchContacts } from '../../features/contacts/contactsApi';
 import { selectContactsError } from '../../features/contacts/contactsSlice';
 import styles from './Contacts.module.css';
@@ -16,9 +15,6 @@ export const Contacts = () => {
   const openAddForm = () => setIsAddFormOpen(true);
   const closeAddForm = () => setIsAddFormOpen(false);
 
-  const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {};
-  const handleSearchByButton = (value: string) => {};
-
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
@@ -26,13 +22,7 @@ export const Contacts = () => {
   return (
     <>
       <div className={styles.contactsContainer}>
-        <Search
-          placeholder='Поиск...'
-          enterButton
-          allowClear
-          onSearch={handleSearchByButton}
-          onChange={handleLiveSearch}
-        />
+        <SearchForm />
         <Divider orientation='center'>Список контактов</Divider>
         <Button type='primary' onClick={openAddForm}>
           Добавить контакт
