@@ -23,11 +23,7 @@ const initialState: ContactsState = {
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    setNoChanges: state => {
-      state.error = 'В контакте нет изменений!';
-    },
-  },
+  reducers: {},
 
   extraReducers: builder => {
     builder
@@ -103,7 +99,5 @@ export const contactsSlice = createSlice({
 export const selectContacts = (state: RootState) => state.contacts.list;
 export const selectContactsStatus = (state: RootState) => state.contacts.status;
 export const selectContactsError = (state: RootState) => state.contacts.error;
-
-export const { setNoChanges } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

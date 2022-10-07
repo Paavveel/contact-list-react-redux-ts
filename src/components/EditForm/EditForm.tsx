@@ -1,13 +1,10 @@
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   ContactFormValues,
   editContact,
 } from '../../features/contacts/contactsApi';
-import {
-  selectContactsStatus,
-  setNoChanges,
-} from '../../features/contacts/contactsSlice';
+import { selectContactsStatus } from '../../features/contacts/contactsSlice';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { EditFormProps } from './EditForm.props';
 
@@ -26,8 +23,8 @@ export const EditForm = ({
       selectedContact.name === name.trim() &&
       selectedContact.phone === phone.trim()
     ) {
-      dispatch(setNoChanges());
       closeEditForm();
+      message.warning('Нет изменений в контакте');
       return;
     }
 
