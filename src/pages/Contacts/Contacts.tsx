@@ -4,6 +4,7 @@ import Search from 'antd/lib/input/Search';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AddForm } from '../../components';
+import { EditForm } from '../../components/EditForm/EditForm';
 import {
   ContactItem,
   deleteContact,
@@ -18,6 +19,10 @@ import styles from './Contacts.module.css';
 
 export const Contacts = () => {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<ContactItem | null>(
+    null
+  );
   const contacts = useAppSelector(selectContacts);
   const error = useAppSelector(selectContactsError);
   const status = useAppSelector(selectContactsStatus);
@@ -25,22 +30,18 @@ export const Contacts = () => {
 
   const openAddForm = () => setIsAddFormOpen(true);
   const closeAddForm = () => setIsAddFormOpen(false);
+  const openEditForm = () => setIsEditFormOpen(true);
+  const closeEditForm = () => setIsEditFormOpen(false);
 
-  const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(
-      '🚀 ~ file: Contacts.tsx ~ line 21 ~ handleLiveSearch ~ e.target.value',
-      e.target.value
-    );
-  };
-  const handleSearchByButton = (value: string) => {
-    console.log(
-      '🚀 ~ file: Contacts.tsx ~ line 22 ~ handleSearchByButton ~ value',
-      value
-    );
-  };
+  const handleLiveSearch = (e: ChangeEvent<HTMLInputElement>) => {};
+  const handleSearchByButton = (value: string) => {};
 
   const handleDelete = (id: ContactItem['id']) => {
     dispatch(deleteContact(id));
+  };
+  const handleEdit = (contact: ContactItem) => {
+    openEditForm();
+    setSelectedContact(contact);
   };
 
   useEffect(() => {
@@ -67,22 +68,26 @@ export const Contacts = () => {
           loading={status === 'loading'}
           itemLayout='horizontal'
           dataSource={contacts}
-          renderItem={({ avatar, name, phone, id }) => (
+          renderItem={contact => (
             <List.Item
               actions={[
-                <Button key='list-loadmore-edit' icon={<EditOutlined />} />,
+                <Button
+                  key='list-loadmore-edit'
+                  icon={<EditOutlined />}
+                  onClick={() => handleEdit(contact)}
+                />,
                 <Button
                   key='list-loadmore-more'
                   danger
                   icon={<DeleteOutlined />}
-                  onClick={() => handleDelete(id)}
+                  onClick={() => handleDelete(contact.id)}
                 />,
               ]}
             >
               <List.Item.Meta
-                avatar={<Avatar src={avatar} />}
-                title={name}
-                description={phone}
+                avatar={<Avatar src={contact.avatar} />}
+                title={contact.name}
+                description={contact.phone}
               />
             </List.Item>
           )}
@@ -99,6 +104,13 @@ export const Contacts = () => {
       </div>
       {isAddFormOpen && (
         <AddForm isAddFormOpen={isAddFormOpen} closeAddForm={closeAddForm} />
+      )}
+      {isEditFormOpen && (
+        <EditForm
+          selectedContact={selectedContact}
+          isEditFormOpen={isEditFormOpen}
+          closeEditForm={closeEditForm}
+        />
       )}
     </>
   );

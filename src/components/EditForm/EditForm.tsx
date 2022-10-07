@@ -1,33 +1,38 @@
 import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  addContact,
-  NewContactItem,
-} from '../../features/contacts/contactsApi';
+import { NewContactItem } from '../../features/contacts/contactsApi';
 import { selectContactsStatus } from '../../features/contacts/contactsSlice';
-import styles from './AddForm.module.css';
-import { AddFormProps } from './AddForm.props';
+import styles from './EditForm.module.css';
+import { EditFormProps } from './EditForm.props';
 
-export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
+export const EditForm = ({
+  selectedContact,
+  isEditFormOpen,
+  closeEditForm,
+}: EditFormProps) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectContactsStatus);
 
-  const onFinish = async (newContact: NewContactItem) => {
-    await dispatch(addContact(newContact));
-    closeAddForm();
-  };
+  const onFinish = async (newContact: NewContactItem) => {};
 
   return (
     <Modal
-      title='Добавление контакта'
-      open={isAddFormOpen}
-      onCancel={closeAddForm}
+      title='Редактирование контакта'
+      open={isEditFormOpen}
+      onCancel={closeEditForm}
       width={400}
       centered
       footer={null}
     >
-      <Form onFinish={onFinish} disabled={status === 'loading'}>
+      <Form
+        initialValues={{
+          name: selectedContact?.name,
+          phone: selectedContact?.phone,
+        }}
+        onFinish={onFinish}
+        disabled={status === 'loading'}
+      >
         <Form.Item
           name='name'
           rules={[
