@@ -3,8 +3,7 @@ import { Alert, Avatar, Button, Divider, List } from 'antd';
 import Search from 'antd/lib/input/Search';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { AddForm } from '../../components';
-import { EditForm } from '../../components/EditForm/EditForm';
+import { AddForm, EditForm } from '../../components';
 import {
   ContactItem,
   deleteContact,

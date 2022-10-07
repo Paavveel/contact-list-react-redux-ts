@@ -1,12 +1,11 @@
-import { PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal } from 'antd';
+import { Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   addContact,
   NewContactItem,
 } from '../../features/contacts/contactsApi';
 import { selectContactsStatus } from '../../features/contacts/contactsSlice';
-import styles from './AddForm.module.css';
+import { ContactForm } from '../ContactForm/ContactForm';
 import { AddFormProps } from './AddForm.props';
 
 export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
@@ -27,42 +26,7 @@ export const AddForm = ({ isAddFormOpen, closeAddForm }: AddFormProps) => {
       centered
       footer={null}
     >
-      <Form onFinish={onFinish} disabled={status === 'loading'}>
-        <Form.Item
-          name='name'
-          rules={[
-            { required: true, message: 'Пожалуйста введите имя контакта' },
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined className='site-form-item-icon' />}
-            placeholder='Имя контакта'
-          />
-        </Form.Item>
-
-        <Form.Item
-          name='phone'
-          rules={[
-            { required: true, message: 'Пожалуйста введите номер телефона' },
-          ]}
-        >
-          <Input
-            prefix={<PhoneOutlined className='site-form-item-icon' />}
-            placeholder='Номер телефона'
-          />
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            loading={status === 'loading'}
-            className={styles.addButton}
-            type='primary'
-            htmlType='submit'
-          >
-            Сохранить
-          </Button>
-        </Form.Item>
-      </Form>
+      <ContactForm onFinish={onFinish} status={status} />
     </Modal>
   );
 };
