@@ -10,10 +10,7 @@ import {
   ContactItem,
   deleteContact,
 } from '../../features/contacts/contactsApi';
-import {
-  selectContacts,
-  selectContactsStatus,
-} from '../../features/contacts/contactsSlice';
+import { selectContactsStatus } from '../../features/contacts/contactsSlice';
 import { EditForm } from '../EditForm/EditForm';
 import { ContactListProps } from './ContactList.props';
 const { confirm } = Modal;
@@ -23,7 +20,6 @@ export const ContactList = ({ filteredContacts }: ContactListProps) => {
   const [selectedContact, setSelectedContact] = useState<ContactItem | null>(
     null
   );
-  const contacts = useAppSelector(selectContacts);
   const status = useAppSelector(selectContactsStatus);
   const dispatch = useAppDispatch();
 
@@ -54,7 +50,7 @@ export const ContactList = ({ filteredContacts }: ContactListProps) => {
       <List
         loading={status === 'loading'}
         itemLayout='horizontal'
-        dataSource={filteredContacts.length ? filteredContacts : contacts}
+        dataSource={filteredContacts}
         renderItem={contact => (
           <List.Item
             actions={[

@@ -1,4 +1,4 @@
-import { ContactItem } from './../../features/contacts/contactsApi';
+import { ChangeEvent } from 'react';
 export interface SearchFormProps {
-  setFilteredContacts: (value: ContactItem[]) => void;
+  handleLiveSearch: (e: ChangeEvent<HTMLInputElement>) => void;
 }
