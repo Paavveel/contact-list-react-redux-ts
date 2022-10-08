@@ -1,4 +1,8 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { Avatar, Button, List, Modal } from 'antd';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -12,6 +16,7 @@ import {
 } from '../../features/contacts/contactsSlice';
 import { EditForm } from '../EditForm/EditForm';
 import { ContactListProps } from './ContactList.props';
+const { confirm } = Modal;
 
 export const ContactList = ({ filteredContacts }: ContactListProps) => {
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
@@ -25,19 +30,17 @@ export const ContactList = ({ filteredContacts }: ContactListProps) => {
   const openEditForm = () => setIsEditFormOpen(true);
   const closeEditForm = () => setIsEditFormOpen(false);
 
-  const handleDelete = (id: ContactItem['id']) => {
-    Modal.info({
+  const handleDelete = (contact: ContactItem) => {
+    setSelectedContact(contact);
+    confirm({
       title: 'Вы уверены?',
-      content: (
-        <div>
-          <p>Контакт будет удален</p>
-        </div>
-      ),
+      icon: <ExclamationCircleOutlined />,
+      content: `Контакт ${contact.name} будет удален`,
+      okText: 'Да',
+      okType: 'danger',
+      cancelText: 'Нет',
       onOk() {
-        dispatch(deleteContact(id));
-      },
-      onCancel() {
-        closeEditForm();
+        dispatch(deleteContact(contact.id));
       },
     });
   };
@@ -64,7 +67,7 @@ export const ContactList = ({ filteredContacts }: ContactListProps) => {
                 key='list-loadmore-more'
                 danger
                 icon={<DeleteOutlined />}
-                onClick={() => handleDelete(contact.id)}
+                onClick={() => handleDelete(contact)}
               />,
             ]}
           >
