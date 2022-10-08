@@ -1,4 +1,4 @@
-import Search from 'antd/lib/input/Search';
+import { Input } from 'antd';
 import { ChangeEvent } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { selectContacts } from '../../features/contacts/contactsSlice';
@@ -17,14 +17,12 @@ export const SearchForm = ({ setFilteredContacts }: SearchFormProps) => {
     );
     setFilteredContacts(filteredContacts);
   };
-  const handleSearchByButton = (value: string) => {};
 
   return (
-    <Search
-      placeholder='Поиск...'
-      enterButton
+    <Input
+      placeholder='Поиск контакта'
+      size='large'
       allowClear
-      onSearch={handleSearchByButton}
       onChange={handleLiveSearch}
     />
   );
