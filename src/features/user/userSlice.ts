@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchUsers, UserItem } from './userApi';
+import { fetchUsers, User } from './userApi';
 
 export interface UserState {
-  data: UserItem | null;
+  user: User | null;
   status: 'idle' | 'loading' | 'failed' | 'success';
   error: string;
 }
 
-const getInitialUserFromLocalStorage = (): UserState['data'] => {
+const getInitialUserFromLocalStorage = (): UserState['user'] => {
   const user = localStorage.getItem('user');
   if (typeof user === 'string') {
     return JSON.parse(user);
@@ -17,7 +17,7 @@ const getInitialUserFromLocalStorage = (): UserState['data'] => {
 };
 
 const initialState: UserState = {
-  data: getInitialUserFromLocalStorage(),
+  user: getInitialUserFromLocalStorage(),
   status: 'idle',
   error: '',
 };
@@ -36,7 +36,7 @@ export const userSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         if (action.payload) {
           state.status = 'success';
-          state.data = action.payload;
+          state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload));
         }
       })
@@ -49,7 +49,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: RootState) => state.user.data;
+export const selectUser = (state: RootState) => state.user.user;
 export const selectUserStatus = (state: RootState) => state.user.status;
 export const selectUserError = (state: RootState) => state.user.error;
 

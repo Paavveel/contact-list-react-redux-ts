@@ -1,0 +1,8 @@
+.AuthForm {
+  display: grid;
+  gap: 20px;
+}
+
+.AuthFormButton {
+  width: 100%;
+}
