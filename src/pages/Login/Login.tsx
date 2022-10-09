@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AuthForm } from '../../components';
-import { AuthFormValues, fetchUsers } from '../../features/user/userApi';
+import { AuthFormValues, getAuth } from '../../features/user/userApi';
 import { clearError, selectUserError } from '../../features/user/userSlice';
 import styles from './Login.module.css';
 const { Title } = Typography;
@@ -14,7 +14,7 @@ export const Login = () => {
   const dispatch = useAppDispatch();
 
   const SignIn = (formValues: AuthFormValues) => {
-    dispatch(fetchUsers(formValues));
+    dispatch(getAuth(formValues));
   };
 
   useEffect(() => {

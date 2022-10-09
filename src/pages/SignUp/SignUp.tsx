@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AuthForm } from '../../components';
+import { AuthFormValues, createUser } from '../../features/user/userApi';
 import { clearError, selectUserError } from '../../features/user/userSlice';
 import styles from './SignUp.module.css';
 const { Title } = Typography;
@@ -12,7 +13,9 @@ export const SignUp = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  const createAccount = () => {};
+  const createAccount = (formValues: AuthFormValues) => {
+    dispatch(createUser(formValues));
+  };
 
   useEffect(() => {
     return () => {

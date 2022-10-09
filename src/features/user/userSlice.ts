@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchUsers, User } from './userApi';
+import { createUser, getAuth, User } from './userApi';
 
 export interface UserState {
   user: User | null;
@@ -33,18 +33,34 @@ export const userSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(fetchUsers.pending, state => {
+      .addCase(getAuth.pending, state => {
         state.status = 'loading';
         state.error = '';
       })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
+      .addCase(getAuth.fulfilled, (state, action) => {
         if (action.payload) {
           state.status = 'success';
           state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload));
         }
       })
-      .addCase(fetchUsers.rejected, (state, action) => {
+      .addCase(getAuth.rejected, (state, action) => {
+        state.status = 'failed';
+        if (action.payload) {
+          state.error = action.payload;
+        }
+      })
+
+      .addCase(createUser.pending, state => {
+        state.status = 'loading';
+        state.error = '';
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.status = 'success';
+        }
+      })
+      .addCase(createUser.rejected, (state, action) => {
         state.status = 'failed';
         if (action.payload) {
           state.error = action.payload;

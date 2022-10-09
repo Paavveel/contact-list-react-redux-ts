@@ -3,24 +3,23 @@ import { API } from '../../helpers/api';
 import { logIn } from '../auth/authSlice';
 
 export interface User {
-  name: string;
-  avatar: string;
-  email: string;
   username: string;
   password: string;
+  avatar: string;
   id: string;
 }
 export interface AuthFormValues {
   username: User['username'];
   password: User['password'];
+  confirm?: string;
 }
 
-export const fetchUsers = createAsyncThunk<
+export const getAuth = createAsyncThunk<
   User,
   AuthFormValues,
   { rejectValue: string }
 >(
-  'user/fetchUsers',
+  'user/getAuth',
   async (formValues: AuthFormValues, { rejectWithValue, dispatch }) => {
     const response = await fetch(API.USERS_URL);
 
@@ -48,5 +47,51 @@ export const fetchUsers = createAsyncThunk<
 
     dispatch(logIn());
     return foundUser;
+  }
+);
+
+export const createUser = createAsyncThunk<
+  User,
+  AuthFormValues,
+  { rejectValue: string }
+>(
+  'user/createUser',
+  async ({ username, password }: AuthFormValues, { rejectWithValue }) => {
+    const getAllUsers = await fetch(API.USERS_URL);
+
+    if (!getAllUsers.ok) {
+      return rejectWithValue(
+        `Что-то пошло не так: ${getAllUsers.status} (${getAllUsers.statusText})`
+      );
+    }
+
+    const allUsersList = (await getAllUsers.json()) as User[];
+
+    const foundUser = allUsersList.find(
+      ({ username: uname }) => uname === username
+    );
+
+    if (foundUser) {
+      return rejectWithValue('Данный пользователь уже существует');
+    }
+
+    const response = await fetch(API.USERS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      return rejectWithValue(
+        `Что-то пошло не так: ${response.status} (${response.statusText})`
+      );
+    }
+
+    return await response.json();
   }
 );
