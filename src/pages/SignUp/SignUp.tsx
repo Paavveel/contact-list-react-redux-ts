@@ -1,6 +1,6 @@
-import { Alert, Typography } from 'antd';
+import { Alert, Modal, Typography } from 'antd';
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { AuthForm } from '../../components';
 import { AuthFormValues, createUser } from '../../features/user/userApi';
@@ -12,9 +12,20 @@ export const SignUp = () => {
   const error = useAppSelector(selectUserError);
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const createAccount = (formValues: AuthFormValues) => {
-    dispatch(createUser(formValues));
+  const createAccount = async (formValues: AuthFormValues) => {
+    try {
+      const newUser = await dispatch(createUser(formValues)).unwrap();
+      if (newUser) {
+        Modal.success({
+          title: 'Вы успешно зарегистрировались!',
+          onOk() {
+            navigate('/', { replace: true });
+          },
+        });
+      }
+    } catch {}
   };
 
   useEffect(() => {
