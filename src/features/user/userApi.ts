@@ -7,10 +7,12 @@ export interface User {
   avatar: string;
   email: string;
   username: string;
+  password: string;
   id: string;
 }
 export interface AuthFormValues {
   username: User['username'];
+  password: User['password'];
 }
 
 export const fetchUsers = createAsyncThunk<
@@ -28,12 +30,20 @@ export const fetchUsers = createAsyncThunk<
       );
     }
     const usersList = (await response.json()) as User[];
-    const foundUser = usersList.find(
+    const foundUserByUsername = usersList.find(
       ({ username }) => username === formValues.username
     );
 
-    if (!foundUser) {
+    if (!foundUserByUsername) {
       return rejectWithValue('Данный пользователь не существует');
+    }
+    const foundUser = usersList.find(
+      ({ username, password }) =>
+        username === formValues.username && password === formValues.password
+    );
+
+    if (!foundUser) {
+      return rejectWithValue('Неверный пароль');
     }
 
     dispatch(logIn());

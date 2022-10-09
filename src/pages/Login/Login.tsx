@@ -11,7 +11,7 @@ export const Login = () => {
 
   const dispatch = useAppDispatch();
 
-  const SignIn = async (formValues: AuthFormValues) => {
+  const SignIn = (formValues: AuthFormValues) => {
     dispatch(fetchUsers(formValues));
   };
 
