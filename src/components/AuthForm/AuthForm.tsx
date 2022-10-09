@@ -10,7 +10,11 @@ import { selectUserStatus } from '../../features/user/userSlice';
 import styles from './AuthForm.module.css';
 import { AuthFormProps } from './AuthForm.props';
 
-export const AuthForm = ({ onFinish, buttonText }: AuthFormProps) => {
+export const AuthForm = ({
+  onFinish,
+  buttonText,
+  confirmPassword = false,
+}: AuthFormProps) => {
   const status = useAppSelector(selectUserStatus);
 
   return (
@@ -45,6 +49,7 @@ export const AuthForm = ({ onFinish, buttonText }: AuthFormProps) => {
               whitespace: true,
             },
           ]}
+          hasFeedback={confirmPassword ? true : false}
         >
           <Input.Password
             prefix={<LockOutlined className='site-form-item-icon' />}
@@ -55,6 +60,36 @@ export const AuthForm = ({ onFinish, buttonText }: AuthFormProps) => {
             placeholder='Пароль'
           />
         </Form.Item>
+        {confirmPassword && (
+          <Form.Item
+            name='confirm'
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Пожалуйста подтвердите ваш пароль',
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Пароли не совпадают!'));
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className='site-form-item-icon' />}
+              iconRender={visible =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
+              type='password'
+              placeholder='Повторите пароль'
+            />
+          </Form.Item>
+        )}
         <Form.Item>
           <Button
             type='primary'

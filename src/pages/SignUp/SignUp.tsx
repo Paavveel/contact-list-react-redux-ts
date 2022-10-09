@@ -24,7 +24,11 @@ export const SignUp = () => {
     <div className={styles.SignUpContainer}>
       <div>
         <Title className={styles.SignUpTitle}>Регистрация</Title>
-        <AuthForm buttonText='Зарегистрироваться' onFinish={createAccount} />
+        <AuthForm
+          confirmPassword
+          buttonText='Зарегистрироваться'
+          onFinish={createAccount}
+        />
         <div>
           Или <Link to='/'>войти</Link>
         </div>

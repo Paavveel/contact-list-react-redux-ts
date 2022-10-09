@@ -29,7 +29,7 @@ export const Login = () => {
         <Title className={styles.loginFormTitle}>Авторизация</Title>
         <AuthForm buttonText='Войти' onFinish={SignIn} />
         <div>
-          Или <Link to='signup'>зарегистрируйся</Link>
+          Или <Link to='signup'>зарегистрироваться</Link>
         </div>
 
         {error && (
