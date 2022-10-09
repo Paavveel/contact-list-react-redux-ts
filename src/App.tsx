@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { AppRoutes } from './helpers/routes';
-import { Contacts, HomeLayout, Login } from './pages';
+import { Contacts, HomeLayout, Login, SignUp } from './pages';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 
 const router = createBrowserRouter(
@@ -13,7 +13,7 @@ const router = createBrowserRouter(
     <Route>
       <Route element={<HomeLayout />}>
         <Route path={AppRoutes.HOME} element={<Login />} />
-        <Route path={AppRoutes.SIGNUP} element={<></>} />
+        <Route path={AppRoutes.SIGNUP} element={<SignUp />} />
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route path={AppRoutes.CONTACTS} element={<Contacts />} />

@@ -8,16 +8,12 @@
   align-content: center;
 }
 
-.loginForm {
-  display: grid;
-  gap: 20px;
-}
-
 .loginFormTitle {
   text-align: center;
 }
 
 .loginError {
+  margin-top: 20px;
   width: 100%;
 }
 

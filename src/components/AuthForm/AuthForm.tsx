@@ -10,7 +10,7 @@ import { selectUserStatus } from '../../features/user/userSlice';
 import styles from './AuthForm.module.css';
 import { AuthFormProps } from './AuthForm.props';
 
-export const AuthForm = ({ onFinish }: AuthFormProps) => {
+export const AuthForm = ({ onFinish, buttonText }: AuthFormProps) => {
   const status = useAppSelector(selectUserStatus);
 
   return (
@@ -23,7 +23,13 @@ export const AuthForm = ({ onFinish }: AuthFormProps) => {
       >
         <Form.Item
           name='username'
-          rules={[{ required: true, message: 'Пожалуйста введите ваш логин' }]}
+          rules={[
+            {
+              required: true,
+              message: 'Пожалуйста введите ваш логин',
+              whitespace: true,
+            },
+          ]}
         >
           <Input
             prefix={<UserOutlined className='site-form-item-icon' />}
@@ -32,7 +38,13 @@ export const AuthForm = ({ onFinish }: AuthFormProps) => {
         </Form.Item>
         <Form.Item
           name='password'
-          rules={[{ required: true, message: 'Пожалуйста введите ваш пароль' }]}
+          rules={[
+            {
+              required: true,
+              message: 'Пожалуйста введите ваш пароль',
+              whitespace: true,
+            },
+          ]}
         >
           <Input.Password
             prefix={<LockOutlined className='site-form-item-icon' />}
@@ -49,7 +61,7 @@ export const AuthForm = ({ onFinish }: AuthFormProps) => {
             htmlType='submit'
             className={styles.AuthFormButton}
           >
-            Вход
+            {buttonText}
           </Button>
         </Form.Item>
       </Form>

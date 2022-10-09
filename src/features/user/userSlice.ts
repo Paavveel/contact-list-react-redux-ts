@@ -25,7 +25,11 @@ const initialState: UserState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: state => {
+      state.error = '';
+    },
+  },
 
   extraReducers: builder => {
     builder
@@ -53,4 +57,5 @@ export const selectUser = (state: RootState) => state.user.user;
 export const selectUserStatus = (state: RootState) => state.user.status;
 export const selectUserError = (state: RootState) => state.user.error;
 
+export const { clearError } = userSlice.actions;
 export default userSlice.reducer;
