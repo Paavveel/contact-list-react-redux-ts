@@ -1,7 +1,7 @@
 # О проекте
 
 Тестовое задание на должность Frontend разработчик.
-Готовое демо можно посмотреть по [ссылке](https://paavveel.github.io/contact-list-react-redux-ts/).
+Готовое демо можно посмотреть по [ссылке](https://contact-list-react-redux-ts.vercel.app).
 Проект написан на React JS на шаблоне Create React App --Typescript и Redux Toolkit.
 
 ## Запуск проекта
