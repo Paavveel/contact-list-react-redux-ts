@@ -19,10 +19,7 @@ const router = createBrowserRouter(
         <Route path={AppRoutes.CONTACTS} element={<Contacts />} />
       </Route>
     </Route>
-  ),
-  {
-    basename: '/contact-list-react-redux-ts',
-  }
+  )
 );
 
 function App() {
